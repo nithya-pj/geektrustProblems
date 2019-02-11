@@ -1,0 +1,133 @@
+package trials;
+
+public class BattleLengaburu {
+
+	static Army restLengaburu;
+	static Army finalLengaburu;
+	static boolean battleFlag;
+	static boolean winFlag;
+	static boolean falconiaHorseFlag;
+	static boolean falconiaElephantFlag;
+	static boolean falconiaATFlag;
+	static boolean falconiaSGFlag;
+	
+	public BattleLengaburu() {
+		restLengaburu=new Army(100,50,10,5);
+		finalLengaburu=new Army(100,50,10,5);
+		battleFlag=true;
+		winFlag=false;
+		falconiaHorseFlag=true;
+		falconiaElephantFlag=true;
+		falconiaATFlag=true;
+		falconiaSGFlag=true;
+	}
+	
+	public boolean battleFuncRound1(Army falconia,Army lengaburu){  //first round
+		
+		lengaburu.horses=falconia.horses/2;				
+		lengaburu.elephants=falconia.elephants/2;
+		lengaburu.armouredTank=falconia.armouredTank/2;
+		lengaburu.slingGun=falconia.slingGun/2;
+		
+		if(lengaburu.horses>finalLengaburu.horses){
+			lengaburu.horses=finalLengaburu.horses;
+		}
+		if(lengaburu.elephants>finalLengaburu.elephants){
+			lengaburu.elephants=finalLengaburu.elephants;
+		}
+		if(lengaburu.armouredTank>finalLengaburu.armouredTank){
+			lengaburu.armouredTank=finalLengaburu.armouredTank;
+		}
+		if(lengaburu.slingGun>finalLengaburu.slingGun){
+			lengaburu.slingGun=finalLengaburu.slingGun;
+		}
+		
+		restLengaburu.horses-=lengaburu.horses;				//calculating rest of the army in lengaburu
+		restLengaburu.elephants-=lengaburu.elephants;
+		restLengaburu.armouredTank-=lengaburu.armouredTank;
+		restLengaburu.slingGun-=lengaburu.slingGun;
+		
+		falconia.horses-=(2*lengaburu.horses);				//calculating rest of the army in falconia
+		falconia.elephants-=(2*lengaburu.elephants);
+		falconia.armouredTank-=(2*lengaburu.armouredTank);
+		falconia.slingGun-=(2*lengaburu.slingGun);
+		
+		while(battleFlag){
+			falconia=battleFuncSubs(falconia);
+		}
+		
+		return winFlag;
+	}
+	
+	
+	public Army battleFuncSubs(Army falconia){ // substitutions
+
+	if(falconia.horses>0||falconia.elephants>0||falconia.armouredTank>0||falconia.slingGun>0){	
+			if(falconia.horses>0 && falconiaHorseFlag){
+				if(restLengaburu.horses>0){
+					restLengaburu.horses--;
+					falconia.horses-=2;
+				}else if(restLengaburu.elephants>0){
+					restLengaburu.elephants--;
+					falconia.horses-=4;
+				}else{
+					falconiaHorseFlag=false;
+				}
+			}else if(falconia.elephants>0 && falconiaElephantFlag){
+				if(restLengaburu.elephants>0){
+					falconia.elephants-=2;
+					restLengaburu.elephants--;
+				}else if(restLengaburu.horses>1){
+					falconia.elephants-=2;
+					restLengaburu.horses-=2;
+				}else if(restLengaburu.armouredTank>0){
+					falconia.elephants-=4;
+					restLengaburu.armouredTank-=1;
+				}else{
+					falconiaElephantFlag=false;
+				}
+			}else if(falconia.armouredTank>0 && falconiaATFlag){
+				if(restLengaburu.armouredTank>0){
+					restLengaburu.armouredTank--;
+					falconia.armouredTank-=2;
+				}else if(restLengaburu.elephants>1){
+					restLengaburu.elephants-=2;
+					falconia.armouredTank-=2;
+				}else if(restLengaburu.slingGun>0){
+					falconia.armouredTank-=4;
+					restLengaburu.slingGun--;
+				}else {
+					falconiaATFlag=false;
+				}
+			}else  if(falconia.slingGun>0 && falconiaSGFlag){
+				if(restLengaburu.slingGun>0){
+					falconia.slingGun-=2;
+					restLengaburu.slingGun--;
+				}else if(restLengaburu.armouredTank>1){
+					falconia.slingGun-=2;
+					restLengaburu.armouredTank-=2;
+				}else{
+					falconiaSGFlag=false;
+				}
+			}else{
+				battleFlag=false;
+				winFlag=false;
+			}
+			
+		}else{
+			battleFlag=false;
+			winFlag=true;
+		}
+	return falconia;
+	}
+
+	public void finalLengaburuFunc(){   // final lengaburu army deployed
+		finalLengaburu.horses-=restLengaburu.horses;
+		finalLengaburu.elephants-=restLengaburu.elephants;
+		finalLengaburu.armouredTank-=restLengaburu.armouredTank;
+		finalLengaburu.slingGun-=restLengaburu.slingGun;
+		
+		System.out.println("LENGABURU DEPLOYS: \n"+finalLengaburu.horses+"H "+finalLengaburu.elephants+"E "+finalLengaburu.armouredTank+"AT "+finalLengaburu.slingGun+"SG");
+		
+	}
+}
