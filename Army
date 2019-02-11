@@ -1,0 +1,20 @@
+package trials;
+
+public class Army {
+
+	int horses;
+	int elephants;
+	int armouredTank;
+	int slingGun;
+	
+	public Army() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Army(int h,int e,int a,int s) {
+		horses=h;
+		elephants=e;
+		armouredTank=a;
+		slingGun=s;
+	}
+}
